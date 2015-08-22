@@ -63,7 +63,7 @@ $this->load->view('sidebar2');
 		<td class="op3"><?php echo $question->op3;?></td>
 		<td class="op4"><?php echo $question->op4;?></td>
 <td><?php echo $question->ans;?></td>
-<td><?php echo $question->pts;?></td>
+<td><?php echo $question->type;?></td>
 
 <td><?php echo anchor('dash/wipeQuestion/'.$question->id, 'Delete', 'title="Delete"'); ?></td>
 
@@ -145,11 +145,12 @@ $this->load->view('sidebar2');
 </div>
  <div class="col-lg-6">
  <div class="form-group">
-       <label for="exampleInputPassword1">Points </label>
-       <select id="pts" class="form-control">
-       <option value="10">10 Points</option>
-       <option value="20">20 Points</option>
-       <option value="30">30 Points</option>
+       <label for="exampleInputPassword1">Type </label>
+       <select id="question_type" class="form-control">
+       <option value="Verbal">Verbal</option>
+       <option value="Quantitative">Quantitative</option>
+			 <option value="Logical">Logical </option>
+       <option value="Technical">Technical </option>
 
        </select>
 
@@ -191,13 +192,13 @@ $this->load->view('sidebar2');
 
       var ans= $("#ans").val();
 
-      var pts= $("#pts").val();
+      var question_type= $("#question_type").val();
 
 
  //$('#result,#name,#email,#message').empty();
 
 
-      $('#question,#op1,#op2,#op3,#op4,#ans,#pts').css( "border","1px solid #fff" );
+      $('#question,#op1,#op2,#op3,#op4,#ans,#question_type').css( "border","1px solid #fff" );
 
       if(question==''){
          $('#question').css( "border","1px solid red" );
@@ -219,14 +220,14 @@ $this->load->view('sidebar2');
        if(ans==''){
         $('#ans').css( "border","1px solid red" );
       }
-       if(pts==''){
-        $('#pts').css( "border","1px solid red" );
+       if(question_type==''){
+        $('#question_type').css( "border","1px solid red" );
       }
 
 
-      if(question!='' && op1!='' && op2!='' && op3!='' && op4!='' && ans!='' && pts!='' )
+      if(question!='' && op1!='' && op2!='' && op3!='' && op4!='' && ans!='' && question_type!='' )
 
-          $.post( "<?php echo base_url();?>index.php/dash/updateQuestion/new",{ question:question,program:program ,op1: op1, op2:op2, op3:op3, op4:op4, ans:ans, pts:pts}, function(data) {
+          $.post( "<?php echo base_url();?>index.php/dash/updateQuestion/new",{ question:question,program:program ,op1: op1, op2:op2, op3:op3, op4:op4, ans:ans, question_type:question_type}, function(data) {
               location.reload();
              }
           );

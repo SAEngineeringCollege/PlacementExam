@@ -66,7 +66,7 @@
   		'op3'=>$this->input->post('op3'),
   		'op4'=>$this->input->post('op4'),
   		'ans'=>$this->input->post('ans'),
-  		'pts'=>$this->input->post('pts'),
+  		'type'=>$this->input->post('question_type'),
   		);
 
   		if($id=='new'){

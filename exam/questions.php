@@ -36,7 +36,7 @@ require 'config.php';
      }
     else if($count==0){
 
-    $insert_q = mysqli_query($con, "INSERT INTO exam_attendee (name,register_number,department,test_number,year) VALUES ( '$name','$register_number','$department','$test_number','$year')") or die(mysql_error());
+    // $insert_q = mysqli_query($con, "INSERT INTO exam_attendee (name,register_number,department,test_number,year) VALUES ( '$name','$register_number','$department','$test_number','$year')") or die(mysql_error());
      $_SESSION['register_number']= $register_number;
 
 	}
@@ -83,20 +83,25 @@ if(!empty($_SESSION['register_number'])){
 
 			<div class="container">
 
+				<?php
+				$number_question = 1;
+				$row = mysqli_query( $con, "select * from exam_event ORDER BY type");
+				$row2= $row;
+				$rowcount = mysqli_num_rows( $row );
+				$remainder = $rowcount/$number_question;
+				$i = 0;
+				$j = 1; $k = 1;
+				?>
+
 
 				<form class="form-horizontal" role="form" onsubmit="return confirm('Are you sure you want to finish the exam ?');" method="post" action="result.php">
-					<?php
-					$number_question = 1;
-					$row = mysqli_query( $con, "select * from exam_event ORDER BY RAND()");
-					$rowcount = mysqli_num_rows( $row );
-					$remainder = $rowcount/$number_question;
-					$i = 0;
-					$j = 1; $k = 1;
-					?>
+
 					<?php while ( $result = mysqli_fetch_assoc($row) ) {
-						 if ( $i == 0) echo "<div class='cont' id='question_splitter_$j'>";?>
+
+
+						 if ( $i == 0) echo "<div class='cont question_splitter' id='question_splitter_$j'>";?>
 						<div id='question<?php echo $k;?>' >
-						<p class='questions' id="qname<?php echo $j;?>"> <?php echo $k?>. <?php echo $result['question'];?>	</p>
+						<p class='questions' id="qname<?php echo $j;?>"> <?php echo $k?>. <?php echo $result['question'];?> <span class="pull-right label label-primary"> <?php echo $result['type'];?></span></p>
 							<?php if($result['program']=""): ?>
 							<pre  class="prettyprint " ><?php echo $result['program'];?></pre>
 						<?php endif; ?>
@@ -139,7 +144,7 @@ if(!empty($_SESSION['register_number'])){
 									$j++;
 								} elseif ( $j > 1 && $i == $number_question ) {
 									echo "<button id='".$j."' class='previous btn btn-lg btn-success pull-left' type='button'>Previous</button>
-							                    <button id='".$j."' class='next btn btn-lg btn-success pull-right' type='button' >Next</button>";
+							            <button id='".$j."' class='next btn btn-lg btn-success pull-right' type='button' >Next</button>";
 									echo "</div>";
 									$i = 0;
 									$j++;
@@ -147,11 +152,46 @@ if(!empty($_SESSION['register_number'])){
 
 							 }
 							  $k++;
+
+
 					     } ?>
+
+
+
+
 				</form>
-			</div>
+
+</div>
+<div class="col-md-12">
+
+<center>
+
+				 <nav>
+  <ul class="pagination  pagination-sm">
+
+		<?php
+		$k = 1;
+			$row = mysqli_query( $con, "select * from exam_event ORDER BY type");
+		while ( $result = mysqli_fetch_assoc($row) ) { ?>
+		<li>
+			<a href="#" aria-label="Previous" class="go_to <?= $result['type']; ?>"  data-question_id="<?= $k; ?>">
+				<span aria-hidden="true"><?= $k; ?></span>
+			</a>
+		</li>
+	<?php	$k++;
+	 }
+		?>
 
 
+
+
+  </ul>
+</nav>
+
+</center>
+
+
+</div>
 
 <?php
 
@@ -205,6 +245,12 @@ if(isset($_POST[1])){
 		    $('#question_splitter_'+last).addClass('hide');
 
 		    $('#question_splitter_'+pre).removeClass('hide');
+		});
+		$(document).on('click','.go_to',function(){
+				newi=parseInt($(this).data('question_id'));
+				$('.question_splitter').addClass('hide');
+
+				$('#question_splitter_'+newi).removeClass('hide');
 		});
 
          setTimeout(function() {

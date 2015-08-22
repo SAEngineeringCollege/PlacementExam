@@ -55,3 +55,8 @@ p.questions{font-size: 20px;}
 .result{text-align:center;}
 #timer{ float:right;padding: 5px 20px 0 0;}
 .already{text-align:center;}
+.Logical{background-color: #097DC1 !important}
+.Technical{background-color: #845970 !important }
+.Quantitative{background-color: #D7A540 !important}
+.Verbal{background-color: #5AB737 !important}
+.question-jump-btn{color:#fff}
